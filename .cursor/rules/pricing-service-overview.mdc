@@ -20,7 +20,7 @@ Freight marketplace pricing microservice: quote shipments, freeze immutable snap
 app/           # FastAPI app, domain, repositories
 tests/         # pytest (unit + integration)
 alembic/       # migrations for schema `pricing`
-docs/          # spec reference (see docs/SPEC.md)
+docs/          # spec (SPEC.md) + plans (plans/) — plan before coding
 pyproject.toml
 .env.example
 README.md

@@ -8,15 +8,31 @@ description: >-
 
 # Pricing Service
 
+## Workflow (mandatory order)
+
+1. **Plan** — write `docs/plans/<feature>.md` before any code (see `docs/plans/README.md`)
+2. **Implement + test** — code and tests in the same change; run `pytest`
+3. **Document** — update README, plan status, `.env.example` when done
+
 ## Before coding
 
-1. Read [reference.md](reference.md) for full spec details
-2. Check [examples.md](examples.md) for request/response shapes
-3. Respect integer IRR money — never use float or Decimal for amounts
+1. Confirm a plan exists in `docs/plans/`
+2. Read [reference.md](reference.md) for full spec details
+3. Check [examples.md](examples.md) for request/response shapes
+4. Respect integer IRR money — never use float or Decimal for amounts
 
 ## Implementation workflow
 
-Copy this checklist and track progress:
+Per-feature checklist:
+
+```
+- [ ] Plan in docs/plans/<feature>.md
+- [ ] Implementation + tests
+- [ ] pytest passes
+- [ ] Docs updated (README, plan status, .env.example)
+```
+
+Full project checklist:
 
 ```
 Task Progress:

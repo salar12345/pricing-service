@@ -6,6 +6,8 @@ alwaysApply: false
 
 # Testing Requirements
 
+**Every implementation must include tests.** No feature is complete without tests that cover the new behavior. Run `pytest` before marking work done.
+
 ## Minimum tests (required)
 
 1. **Unit**: commission math + `gross == commission + driver_net`
