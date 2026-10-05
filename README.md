@@ -37,6 +37,8 @@ curl http://localhost:8000/ready
 pytest -v
 ```
 
+Open **Swagger UI** at http://localhost:8000/docs and follow [docs/SWAGGER_TESTING.md](docs/SWAGGER_TESTING.md) to test all endpoints.
+
 ## Architecture
 
 ```
@@ -284,6 +286,7 @@ Per the take-home spec: JWT auth, commission admin CRUD, event consumers, K8s/CI
 ## Documentation
 
 - [docs/SPEC.md](docs/SPEC.md) — original requirements
+- [docs/SWAGGER_TESTING.md](docs/SWAGGER_TESTING.md) — step-by-step Swagger UI testing guide
 - [docs/plans/implementation.md](docs/plans/implementation.md) — implementation plan
 
 ## Implementation status
