@@ -1,0 +1,48 @@
+---
+description: Mandatory plan-first, test-with-code, update-docs workflow for all changes
+alwaysApply: true
+---
+
+# Development Workflow
+
+Every feature or change follows this order — **do not skip steps**.
+
+## 1. Plan in docs first
+
+Before writing code, add or update a plan under `docs/plans/`:
+
+- File name: `docs/plans/<feature-name>.md` (e.g. `quote-endpoint.md`)
+- Include: goal, scope, API/schema changes, test cases, files to touch
+- Get the plan written and reviewed before implementation starts
+
+No implementation until the plan document exists.
+
+## 2. Implement with tests
+
+Every implementation **must** include tests in the same change:
+
+- New function, endpoint, or service → add unit and/or integration tests
+- Bug fix → add a regression test that fails without the fix
+- Do not merge or consider work done without passing tests
+
+Run `pytest` before marking the task complete.
+
+## 3. Update documentation after implementation
+
+When implementation is done, update docs to match the code:
+
+- `README.md` — setup, commands, env vars, behavior changes
+- `docs/SPEC.md` or plan file — mark plan as done, note any deviations
+- `.env.example` — new or changed environment variables
+- Inline docstrings only where logic is non-obvious
+
+Documentation updates are part of the same task, not a follow-up.
+
+## Checklist (copy per task)
+
+```
+- [ ] Plan written in docs/plans/<feature>.md
+- [ ] Code + tests implemented
+- [ ] pytest passes
+- [ ] README / docs / .env.example updated
+```
