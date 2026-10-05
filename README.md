@@ -21,7 +21,8 @@ Standalone freight pricing microservice for the [Asanbar take-home assignment](d
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -e ".[dev]"
+pip install -r requirements-dev.txt
+# or: pip install -e ".[dev]"
 
 cp .env.example .env
 docker compose up -d
