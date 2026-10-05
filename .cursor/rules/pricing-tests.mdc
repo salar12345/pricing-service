@@ -1,0 +1,29 @@
+---
+description: pytest requirements and minimum test coverage for pricing service
+globs: tests/**/*.py
+alwaysApply: false
+---
+
+# Testing Requirements
+
+## Minimum tests (required)
+
+1. **Unit**: commission math + `gross == commission + driver_net`
+2. **API**: unknown rate card → 422 `UNKNOWN_RATE_CARD`
+3. **Integration**: confirm twice with same `Idempotency-Key` → one snapshot, one Redis event
+4. **Integration**: second confirm on shipment with snapshot → 409 `SNAPSHOT_ALREADY_EXISTS`
+
+## Conventions
+
+- One command runs all tests (document in README)
+- Postgres via Docker, testcontainers, or similar — document setup
+- `fakeredis` acceptable for Redis Streams in tests (note in README)
+
+## Example assertion pattern
+
+```python
+def test_money_invariant():
+    gross, commission, driver_net = calculate_quote(...)
+    assert driver_net + commission == gross
+    assert all(isinstance(x, int) for x in (gross, commission, driver_net))
+```

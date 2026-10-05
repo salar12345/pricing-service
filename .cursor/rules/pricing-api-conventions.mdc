@@ -1,0 +1,46 @@
+---
+description: FastAPI endpoint and error response conventions for pricing API
+globs: app/**/*.py
+alwaysApply: false
+---
+
+# API Conventions
+
+## Error envelope (all endpoints)
+
+```json
+{
+  "error": {
+    "code": "QUOTE_NOT_FOUND",
+    "message": "...",
+    "correlation_id": "..."
+  }
+}
+```
+
+Pass through client `X-Correlation-Id` on errors when provided.
+
+## Error codes
+
+| Code | HTTP | When |
+|------|------|------|
+| `UNKNOWN_RATE_CARD` | 422 | Unknown cargo/vehicle combo |
+| `QUOTE_NOT_FOUND` | 404 | No quote for shipment |
+| `SNAPSHOT_NOT_FOUND` | 404 | No confirmed snapshot |
+| `SNAPSHOT_ALREADY_EXISTS` | 409 | Second confirm on same shipment |
+| `IDEMPOTENCY_CONFLICT` | 409 | Same key, different shipment/context |
+
+## Endpoints
+
+- `POST .../shipments/{shipment_id}/quote` — create or return cached quote
+- `GET .../shipments/{shipment_id}/quotes/latest`
+- `POST .../shipments/{shipment_id}/confirm-snapshot` — requires `Idempotency-Key` header
+- `GET .../shipments/{shipment_id}/snapshot`
+
+## Idempotency (confirm-snapshot)
+
+- No quote → 404
+- Snapshot exists → 409 (even different idempotency key)
+- Same key replay → 200, same snapshot, **no second event**
+- Same key, different context → 409 `IDEMPOTENCY_CONFLICT`
+- First success → 201, write snapshot, publish Redis event once

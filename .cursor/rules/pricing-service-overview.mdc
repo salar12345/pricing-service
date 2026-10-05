@@ -1,0 +1,39 @@
+---
+description: Core context for the Asanbar pricing service take-home project
+alwaysApply: true
+---
+
+# Pricing Service Overview
+
+Freight marketplace pricing microservice: quote shipments, freeze immutable snapshots on confirm, publish events for payment.
+
+## Stack
+
+- Python 3.12, FastAPI, PostgreSQL (`pricing` schema), Alembic, Redis Streams, pytest
+- API prefix: `/api/v1/pricing`
+- Health: `GET /health` (process up), `GET /ready` (Postgres reachable, else 503)
+- No auth/JWT for this exercise
+
+## Project layout
+
+```
+app/           # FastAPI app, domain, repositories
+tests/         # pytest (unit + integration)
+alembic/       # migrations for schema `pricing`
+docs/          # spec reference (see docs/SPEC.md)
+pyproject.toml
+.env.example
+README.md
+```
+
+## Hard constraints
+
+- All money in **IRR as integers** — no floats, no `Decimal` for amounts
+- Always: `driver_net_amount + commission_amount == gross_amount`
+- Input validation: `distance_km > 0`, `stop_count >= 1`
+- One snapshot per shipment (unique DB constraint)
+- Skip: JWT, commission admin CRUD, event consumers, K8s/CI, payment integration
+
+## Spec source
+
+Full requirements live in `docs/SPEC.md` (from the take-home PDF). When in doubt, match the spec exactly.

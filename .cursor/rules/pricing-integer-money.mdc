@@ -1,0 +1,36 @@
+---
+description: Integer money and pricing calculation rules — no floats or Decimal
+globs: app/**/pricing/**/*.py,app/**/domain/**/*.py,app/**/services/**/*.py
+alwaysApply: false
+---
+
+# Integer Money Rules
+
+## Rate card (YAML → Postgres seed)
+
+| cargo_type | vehicle_type | rate_per_km | stop_fee |
+|------------|--------------|-------------|----------|
+| general | trailer | 12_000 | 500_000 |
+| general | single | 10_000 | 400_000 |
+| refrigerated | trailer | 15_000 | 600_000 |
+
+Seed one commission rule: name `"default"`, `commission_rate_bps = 1000` (10%), active.
+
+## Calculation (integer math only)
+
+```python
+base = distance_km * rate_per_km + stop_fee * max(0, stop_count - 1)
+gross = base
+commission = round(gross * commission_rate_bps / 10_000)
+driver_net = gross - commission
+assert driver_net + commission == gross
+```
+
+## Quote caching
+
+- `force_recalculate: false` — same shipment + same inputs → return existing quote (same `quote_id`)
+- `force_recalculate: true` — bump `quote_version` (1, 2, 3…)
+
+## Response fields
+
+Include `breakdown`: `base_amount`, `distance_amount`, `stop_fee`, `rate_per_km`, `commission_rate_bps`. Currency always `"IRR"`.
